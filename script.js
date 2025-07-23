@@ -21,14 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 主视觉配图跟随鼠标
         const heroImage = document.querySelector('.hero-image');
-        if (heroImage && heroImage.getAttribute('data-animation-complete') === 'true') {
+        if (heroImage && (heroImage.getAttribute('data-animation-complete') === 'true' || heroImage.classList.contains('animation-complete'))) {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
-            const moveX = (mouseX - centerX) * 0.015; // 轻微跟随幅度
-            const moveY = (mouseY - centerY) * 0.015;
+            const moveX = (mouseX - centerX) * 0.02; // 增加跟随幅度使效果更明显
+            const moveY = (mouseY - centerY) * 0.02;
             
-            heroImage.style.transform = `translateY(-50%) translateX(${20 + moveX}px) translateY(${moveY}px)`;
+            // 使用更明确的transform设置
+            heroImage.style.transform = `translateY(calc(-50% + ${moveY}px)) translateX(${20 + moveX}px)`;
+            heroImage.style.transition = 'transform 0.1s ease-out'; // 更快的响应
         }
     });
     
@@ -121,6 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (heroImage) {
             // 标记动画已完成，允许鼠标跟随效果
             heroImage.setAttribute('data-animation-complete', 'true');
+            // 添加完成状态的CSS类，确保保持可见
+            heroImage.classList.add('animation-complete');
         }
     }, 1300); // 等待CSS动画完成
 });

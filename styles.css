@@ -169,12 +169,13 @@ body::after {
     border-radius: 99px;
     height: 64px;
     padding: 0 24px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     width: calc(100vw - 240px);
     max-width: 1200px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     pointer-events: auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo {
@@ -402,8 +403,12 @@ body::after {
     height: 785px;
     z-index: 1;
     opacity: 0;
-    transition: transform 0.3s ease;
     animation: slideInFromRightImage 500ms ease-out 800ms forwards;
+}
+
+/* 动画完成后恢复transition用于鼠标跟随 */
+.hero-image[data-animation-complete="true"] {
+    transition: transform 0.3s ease;
 }
 
 @keyframes slideInFromRightImage {
@@ -415,6 +420,12 @@ body::after {
         opacity: 1;
         transform: translateY(-50%) translateX(20px);
     }
+}
+
+/* 确保动画完成后保持可见状态 */
+.hero-image.animation-complete {
+    opacity: 1 !important;
+    transform: translateY(-50%) translateX(20px) !important;
 }
 
 .hero-image img {
