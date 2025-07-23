@@ -38,7 +38,7 @@ body::before {
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
-    z-index: -2;
+    z-index: -999;
 }
 
 /* 网格点亮效果层 */
@@ -54,7 +54,7 @@ body::after {
         linear-gradient(90deg, rgba(255, 255, 255, 0.25) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
-    z-index: -1;
+    z-index: -998;
     opacity: var(--grid-opacity, 0);
     mask: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 80%, transparent 100%);
     -webkit-mask: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0.3) 80%, transparent 100%);
@@ -73,10 +73,95 @@ body::after {
     margin: 0 auto;
     padding: 36px 120px;
     min-height: 100vh;
+    padding-top: 120px; /* 为固定导航栏留出空间 */
+}
+
+/* 导航栏容器 - 独立于主容器 */
+.navbar-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 104px !important;
+    z-index: 999999 !important;
+    pointer-events: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    padding-top: 20px !important;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideInFromTop 400ms ease-out 100ms forwards;
+}
+
+/* 动画关键帧定义 */
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* 导航栏样式 */
 .navbar {
+    position: relative !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -86,12 +171,18 @@ body::after {
     padding: 0 24px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+    width: calc(100vw - 240px);
+    max-width: 1200px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    pointer-events: auto !important;
 }
 
 .logo {
     display: flex;
     align-items: center;
     gap: 6px;
+    opacity: 0;
+    animation: slideInFromLeft 350ms ease-out 200ms forwards;
 }
 
 .logo-text {
@@ -114,7 +205,15 @@ body::after {
     display: flex;
     align-items: center;
     cursor: pointer;
+    opacity: 0;
+    animation: fadeInUp 300ms ease-out forwards;
 }
+
+.nav-item:nth-child(1) { animation-delay: 300ms; }
+.nav-item:nth-child(2) { animation-delay: 350ms; }
+.nav-item:nth-child(3) { animation-delay: 400ms; }
+.nav-item:nth-child(4) { animation-delay: 450ms; }
+.nav-item:nth-child(5) { animation-delay: 500ms; }
 
 .nav-item span {
     font-size: 16px;
@@ -154,10 +253,10 @@ body::after {
     width: 50%;
     max-width: 600px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.8s ease;
+    transform: translateY(30px);
     margin-right: auto;
-    z-index: 2;
+    z-index: 1;
+    animation: slideInFromLeft 500ms ease-out 600ms forwards;
 }
 
 .title {
@@ -165,6 +264,8 @@ body::after {
     font-weight: 400;
     line-height: 1.2;
     margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeInUp 400ms ease-out 700ms forwards;
 }
 
 .primary-text {
@@ -178,19 +279,28 @@ body::after {
 .subtitle {
     font-size: 20px;
     margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeInUp 350ms ease-out 900ms forwards;
 }
 
 .social-icons {
     display: flex;
     gap: 24px;
     margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeInUp 300ms ease-out 1000ms forwards;
 }
 
 .icon {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    animation: scaleIn 300ms ease-out forwards;
 }
+
+.icon:nth-child(1) { animation-delay: 1100ms; }
+.icon:nth-child(2) { animation-delay: 1150ms; }
 
 .cta-button {
     display: flex;
@@ -207,6 +317,9 @@ body::after {
     overflow: hidden;
     z-index: 1;
     border: 2px solid transparent;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 400ms ease-out 1200ms forwards;
 }
 
 .cta-button::before {
@@ -253,7 +366,7 @@ body::after {
 /* 气泡提示样式 */
 .toast {
     position: fixed;
-    top: 20px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--bg-button);
@@ -263,7 +376,7 @@ body::after {
     font-size: 14px;
     font-family: 'Bricolage Grotesque', sans-serif;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 1000;
+    z-index: 10000;
     opacity: 0;
     transform: translateX(-50%) translateY(-20px);
     transition: all 0.3s ease;
@@ -284,12 +397,24 @@ body::after {
     position: absolute;
     right: -80px;
     top: 50%;
-    transform: translateY(-50%) translateX(20px);
+    transform: translateY(-50%) translateX(50px);
     width: 785px;
     height: 785px;
     z-index: 1;
     opacity: 0;
-    transition: opacity 0.8s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
+    animation: slideInFromRightImage 500ms ease-out 800ms forwards;
+}
+
+@keyframes slideInFromRightImage {
+    from {
+        opacity: 0;
+        transform: translateY(-50%) translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(-50%) translateX(20px);
+    }
 }
 
 .hero-image img {
@@ -302,6 +427,11 @@ body::after {
 @media (max-width: 1024px) {
     .container {
         padding: 20px 40px;
+        padding-top: 120px;
+    }
+    
+    .navbar {
+        width: calc(100% - 80px);
     }
     
     .hero-text {
@@ -322,9 +452,12 @@ body::after {
 @media (max-width: 768px) {
     .container {
         padding: 20px;
+        padding-top: 100px;
     }
     
     .navbar {
+        top: 10px;
+        width: calc(100% - 40px);
         padding: 0 15px;
         overflow-x: auto;
     }

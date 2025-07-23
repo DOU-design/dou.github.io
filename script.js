@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 主视觉配图跟随鼠标
         const heroImage = document.querySelector('.hero-image');
-        if (heroImage && heroImage.style.opacity === '1') {
+        if (heroImage && heroImage.getAttribute('data-animation-complete') === 'true') {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
             
@@ -112,21 +112,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // 添加滚动动画效果
+    // CSS动画已处理入场效果，这里只需要获取元素引用
     const heroText = document.querySelector('.hero-text');
     const heroImage = document.querySelector('.hero-image');
     
-    // 简单的入场动画
-    setTimeout(() => {
-        heroText.style.opacity = '1';
-        heroText.style.transform = 'translateY(0)';
-    }, 300);
-    
+    // 等待CSS动画完成后，确保鼠标跟随效果正常工作
     setTimeout(() => {
         if (heroImage) {
-            heroImage.style.opacity = '1';
-            // 初始位置，后续会被鼠标跟随效果覆盖
-            heroImage.style.transform = 'translateY(-50%) translateX(20px)';
+            // 标记动画已完成，允许鼠标跟随效果
+            heroImage.setAttribute('data-animation-complete', 'true');
         }
-    }, 600);
+    }, 1300); // 等待CSS动画完成
 });
